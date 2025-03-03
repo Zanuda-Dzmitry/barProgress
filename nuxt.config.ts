@@ -7,4 +7,13 @@ export default defineNuxtConfig({
   components: true,
   compatibilityDate: "2024-11-01",
   devtools: { enabled: true },
+  app: {
+    baseURL: "/barProgress/",
+  },
+
+  nitro: {
+    output: {
+      dir: "./dist/barProgress",
+    },
+  },
 });
