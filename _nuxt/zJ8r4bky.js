@@ -1,0 +1,1 @@
+import{m as o}from"./D2-eU81V.js";const s=o("modal",{state:()=>({isModalOpen:!1,modalData:null}),actions:{openModal(a){this.isModalOpen=!0,a&&(this.modalData=a)},closeModal(){this.isModalOpen=!1,this.modalData=null}}});export{s as u};
