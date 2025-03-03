@@ -1,38 +1,39 @@
 <template>
-  <div v-if="items.length">
-    <ChartPie :chartData="myChartData" />
+  <div class="chart-container">
+    <VChart :option="chartOptions" />
   </div>
-  <div v-else>Загрузка данных...</div>
 </template>
 
 <script setup lang="ts">
-import ChartDataLabels from "chartjs-plugin-datalabels";
-
 import { useLocalStore } from "../stores/formData";
 const store = useLocalStore();
 
-onMounted(() => {
-  store.loadItems();
-});
-
-// Получаем данные из Store
 const items = computed(() => store.items);
 
-const myChartData = computed(() => ({
-  type: "pie",
-  data: {
-    labels: items.value.map((item) => item.section),
-    datasets: [
-      {
-        data: items.value.map((item) => item.value),
-        backgroundColor: items.value.map((item) => item.color),
+const chartOptions = computed(() => ({
+  series: [
+    {
+      name: "Access From",
+      type: "pie",
+      radius: ["30%", "70%"],
+      itemStyle: {
+        borderRadius: [20, 5, 5, 10],
       },
-    ],
-  },
-  plugins: [ChartDataLabels],
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-  },
+      data: items.value.map((item) => ({
+        name: item.name,
+        value: item.value,
+        itemStyle: {
+          color: item.itemStyle.color,
+        },
+      })),
+    },
+  ],
 }));
 </script>
+
+<style scoped>
+.chart-container {
+  width: 600px;
+  height: 400px;
+}
+</style>

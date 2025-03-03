@@ -41,11 +41,11 @@ const store = useLocalStore();
 
 const currentSectorData = ref<{
   id?: string;
-  section: string;
+  name: string;
   value: number;
   color: string;
 }>({
-  section: "",
+  name: "",
   value: 0,
   color: "#000",
 });
@@ -53,9 +53,9 @@ const currentSectorData = ref<{
 const isEditing = ref(false);
 
 const columns = [
-  { key: "section", label: "Раздел" },
+  { key: "name", label: "Раздел" },
   { key: "value", label: "Значение" },
-  { key: "color", label: "Цвет" },
+  { key: "itemStyle.color", label: "Цвет" },
   { key: "edit", label: "Редактировать" },
   { key: "delete", label: "Удалить" },
 ];
@@ -77,10 +77,15 @@ const items = computed(() => store.items);
 const editItem = (id: string) => {
   const item = store.editItemStore(id);
   if (item) {
-    currentSectorData.value = { ...item }; // Копируем данные для редактирования
-    isEditing.value = true; // Включаем режим редактирования
-    modalStore.openModal();
-  }
+    currentSectorData.value = {
+      id: item.id,
+      name: item.name,
+      value: item.value,
+      color: item.itemStyle.color, // Извлекаем цвет из itemStyle
+    };
+  } // Копируем данные для редактирования
+  isEditing.value = true; // Включаем режим редактирования
+  modalStore.openModal();
 };
 
 const deleteItem = (id: string) => {
@@ -92,17 +97,21 @@ const deleteItem = (id: string) => {
 };
 
 const handleFormSubmit = (data: {
-  section: string;
+  name: string;
   value: number;
   color: string;
 }) => {
   try {
     if (isEditing.value && currentSectorData.value.id) {
       // Если режим редактирования, обновляем элемент
-      store.updateItem(currentSectorData.value.id, data);
+      store.updateItem(currentSectorData.value.id, {
+        name: data.name,
+        value: data.value,
+        color: data.color, // Обновляем цвет
+      });
     } else {
       // Иначе добавляем новый элемент
-      store.addItem(data.section, data.value, data.color);
+      store.addItem(data.name, data.value, data.color);
     }
     modalStore.closeModal(); // Закрываем модальное окно
     resetForm(); // Сбрасываем форму
@@ -112,7 +121,7 @@ const handleFormSubmit = (data: {
 };
 
 const resetForm = () => {
-  currentSectorData.value = { section: "", value: 0, color: "#000" };
+  currentSectorData.value = { name: "", value: 0, color: "#000" };
   isEditing.value = false;
 };
 </script>
