@@ -1,12 +1,22 @@
 import { v4 as uuidv4 } from "uuid";
 
+// {
+//   value: 335,
+//   name: "A",
+//   itemStyle: {
+//     color: "black",
+//   },
+// },
+
 export const useLocalStore = defineStore("saveLocalStorage", {
   state: () => ({
     items: [] as Array<{
       id: string;
-      section: string;
+      name: string;
       value: number;
-      color: string;
+      itemStyle: {
+        color: string;
+      };
     }>,
   }),
   actions: {
@@ -21,12 +31,14 @@ export const useLocalStore = defineStore("saveLocalStorage", {
       }
     },
 
-    addItem(section: string, value: number, color: string) {
+    addItem(name: string, value: number, color: string) {
       const newItem = {
         id: uuidv4(),
-        section,
+        name,
         value,
-        color,
+        itemStyle: {
+          color,
+        },
       };
       this.items.push(newItem);
       this.saveToLocalStorage();
@@ -46,14 +58,17 @@ export const useLocalStore = defineStore("saveLocalStorage", {
 
     updateItem(
       id: string,
-      updatedData: { section?: string; value?: number; color?: string }
+      updatedData: { name?: string; value?: number; color?: string }
     ) {
       const itemIndex = this.items.findIndex((item) => item.id === id);
       if (itemIndex !== -1) {
-        // Обновляем только те поля, которые переданы в updatedData
         this.items[itemIndex] = {
           ...this.items[itemIndex],
-          ...updatedData,
+          name: updatedData.name ?? this.items[itemIndex].name,
+          value: updatedData.value ?? this.items[itemIndex].value,
+          itemStyle: {
+            color: updatedData.color ?? this.items[itemIndex].itemStyle.color,
+          },
         };
         this.saveToLocalStorage();
       } else {

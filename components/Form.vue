@@ -1,7 +1,7 @@
 <template>
   <UForm class="form" @submit.prevent="submitForm">
     <UFormGroup class="form_group" label="Наименование">
-      <UInput v-model="section" />
+      <UInput v-model="name" />
     </UFormGroup>
     <UFormGroup class="form_group" label="Значение">
       <UInput v-model="value" type="number" :min="0" :max="100" />
@@ -20,7 +20,7 @@ const props = defineProps({
   state: {
     type: Object,
     required: false,
-    default: () => ({ section: "", value: 0, color: "#000" }),
+    default: () => ({ name: "", value: 0, color: "#000" }),
   },
   isEditing: {
     type: Boolean,
@@ -28,7 +28,7 @@ const props = defineProps({
   },
 });
 
-const section = ref(props.state.section);
+const name = ref(props.state.name);
 const value = ref(props.state.value);
 const selectedColor = ref(props.state.color);
 
@@ -40,7 +40,7 @@ const updateColor = (color) => {
 // Метод для отправки формы
 const submitForm = () => {
   const formData = {
-    section: section.value,
+    name: name.value,
     value: value.value,
     color: selectedColor.value,
   };
@@ -52,7 +52,7 @@ watch(
   () => props.state,
   (newData) => {
     if (newData) {
-      section.value = newData.section;
+      name.value = newData.name;
       value.value = newData.value;
       selectedColor.value = newData.color;
     }

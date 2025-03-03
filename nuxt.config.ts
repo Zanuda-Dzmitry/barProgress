@@ -1,6 +1,11 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   modules: ["@nuxt/ui", "nuxt-echarts", "@pinia/nuxt", "nuxt-color-picker"],
+  echarts: {
+    renderer: ["canvas"],
+    charts: ["PieChart"],
+    components: ["DatasetComponent", "GridComponent", "TooltipComponent"],
+  },
   ui: {
     global: true,
   },
