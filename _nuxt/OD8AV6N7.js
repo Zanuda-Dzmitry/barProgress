@@ -1,0 +1,1 @@
+import{p as o}from"./Msc8AAhh.js";const s=o("modal",{state:()=>({isModalOpen:!1,modalData:null}),actions:{openModal(a){this.isModalOpen=!0,a&&(this.modalData=a)},closeModal(){this.isModalOpen=!1,this.modalData=null}}});export{s as u};
