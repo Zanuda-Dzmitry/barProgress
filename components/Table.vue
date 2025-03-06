@@ -1,5 +1,8 @@
 <template>
   <UTable :columns="columns" :rows="items">
+    <template #color-data="{ row }">
+      <MyColorComponent :color="row.itemStyle.color" />
+    </template>
     <template #edit-data="{ row }">
       <UButton icon="i-heroicons-pencil-square" @click="editItem(row.id)" />
     </template>
@@ -55,7 +58,7 @@ const isEditing = ref(false);
 const columns = [
   { key: "name", label: "Раздел" },
   { key: "value", label: "Значение" },
-  { key: "itemStyle.color", label: "Цвет" },
+  { key: "color", label: "Цвет" },
   { key: "edit", label: "Редактировать" },
   { key: "delete", label: "Удалить" },
 ];
